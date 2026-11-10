@@ -82,7 +82,7 @@ def publish(client,data_dir,now=None):
     snapshot_hash=hashlib.sha256(raw).hexdigest()
     odds_hash=hashlib.sha256(odds_raw).hexdigest()
     snapshot_path=f'versions/{snapshot_hash}/snapshot.json'
-    odds_path=f'versions/{odds_hash}/odds.json' 
+    odds_path=f'versions/{odds_hash}/odds.json'
     client.upload(snapshot_path,raw)
     client.upload(odds_path,odds_raw)
     manifest=dict(schema_version=1,published_at=(now or datetime.now(timezone.utc)).isoformat(),snapshot=snapshot_path,odds=odds_path,latest_date=data['metadata']['latest_date'])
