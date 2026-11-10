@@ -2,6 +2,7 @@ import { defineConfig } from "@playwright/test";
 import { existsSync } from "node:fs";
 export default defineConfig({
   testDir: "./tests",
+  testIgnore: "cloud.spec.js",
   timeout: 30000,
   use: {
     baseURL: "http://127.0.0.1:4173",

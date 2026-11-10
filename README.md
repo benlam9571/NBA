@@ -67,3 +67,7 @@ npm run test:e2e
 ## 第二期接駁
 
 完整說明見 [odds/README.md](odds/README.md)。設定後端 `ODDS_API_KEY` 並允許 `api.the-odds-api.com` 後，從根目錄執行 `.venv/bin/python -m odds.fetch`；每日 09:07 AEST 排程定義於 `.github/workflows/odds.yml`。目前未配置金鑰，因此真實供應商請求尚未驗證；離線與瀏覽器測試不會花費 API 額度。
+
+## Vercel + Supabase
+
+新專案建立、私有資料、登入白名單、部署及每日更新的完整步驟見 [deploy/README.md](deploy/README.md)。已提供根目錄 `vercel.json`、Supabase migration、後端快照上傳器及雲端模式測試；尚未建立帳戶／專案時仍可用原有本機模式開發。

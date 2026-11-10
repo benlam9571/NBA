@@ -1037,3 +1037,74 @@ summary {
 .analysis-grid {
   align-items: start;
 }
+.cloud-shell {
+  max-width: 480px;
+  margin: 8vh auto;
+  padding: 24px;
+}
+.cloud-shell > .brand {
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.auth-card {
+  padding: 32px;
+}
+.auth-card h1 {
+  font-size: 25px;
+  line-height: 1.4;
+}
+.auth-card p {
+  color: var(--muted);
+  margin: 16px 0;
+  font-size: 13px;
+}
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 24px;
+}
+.auth-card form button {
+  background: var(--green);
+  color: var(--surface);
+  font-weight: 700;
+  border: 0;
+  margin-top: 6px;
+}
+.auth-card input {
+  width: 100%;
+  font-size: 15px;
+}
+.auth-card .bad {
+  color: var(--red);
+}
+.sessionbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 7px max(24px, calc((100vw - 1320px) / 2));
+  background: var(--tint);
+  font-size: 10px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.sessionbar button {
+  font-size: 10px;
+  padding: 4px 10px;
+}
+@media (max-width: 600px) {
+  .cloud-shell {
+    margin: 5vh auto;
+    padding: 18px;
+  }
+  .auth-card {
+    padding: 24px;
+  }
+  .auth-card h1 {
+    font-size: 23px;
+  }
+  .sessionbar {
+    padding: 7px 14px;
+  }
+}

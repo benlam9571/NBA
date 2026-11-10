@@ -37,6 +37,11 @@ jobs:
       - run: pytest -q
       - run: npm ci && npm test && npm run build
         working-directory: web
+      - name: Upload private Supabase snapshots when configured
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python -m deploy.publish_supabase --if-configured
       - uses: actions/cache/save@v4
         with:
           path: data

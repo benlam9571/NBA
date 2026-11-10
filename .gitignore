@@ -9,3 +9,9 @@ data/*
 !data/.gitkeep
 web/test-results/
 web/playwright-report/
+.vercel/
+.env.*
+!.env.example
+web/.env*
+!web/.env.example
+web/dist-cloud/

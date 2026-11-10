@@ -1,4 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
+if (process.env.VITE_DATA_MODE === "supabase" || process.env.VERCEL)
+  process.exit(0);
 const dir = new URL("../../data/", import.meta.url);
 await mkdir(dir, { recursive: true });
 try {

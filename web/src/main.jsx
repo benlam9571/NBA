@@ -24,6 +24,8 @@ import {
 import "./style.css";
 import SortTable from "./Table";
 import { fmt } from "./format";
+import { dataConfig } from "./cloudConfig";
+const CloudGate = React.lazy(() => import("./CloudGate"));
 import {
   initialWeights,
   validateWeights,
@@ -69,7 +71,7 @@ function Badge({ code, large = false }) {
     </span>
   );
 }
-function App() {
+function App({ cloud = { mode: "local" } }) {
   const [model, setModel] = useState(null),
     [error, setError] = useState(""),
     [odds, setOdds] = useState(null),
@@ -80,37 +82,73 @@ function App() {
     [line, setLine] = useState(0.5),
     [dark, setDark] = useState(localStorage.getItem("theme") === "dark");
   useEffect(() => {
-    fetch(import.meta.env.BASE_URL + "snapshot.json")
-      .then((r) => {
-        if (!r.ok) throw Error("未有數據，請先執行 ETL。");
-        return r.json();
-      })
-      .then((x) => setModel(createModel(x)))
-      .catch((e) => setError(e.message));
     const f = () => setRoute(route());
     addEventListener("hashchange", f);
     return () => removeEventListener("hashchange", f);
   }, []);
   useEffect(() => {
+    let active = true;
     const controller = new AbortController();
-    fetch(import.meta.env.BASE_URL + "odds.json", { signal: controller.signal })
-      .then(async (response) => {
-        if (response.status === 404)
-          return {
-            schema_version: 1,
-            status: "disconnected",
-            rows: [],
-            history: [],
-          };
-        if (!response.ok) throw Error("無法讀取盤口快照");
-        return validateOdds(await response.json());
+    const acceptSnapshot = (x) => {
+      if (active) setModel(createModel(x));
+    };
+    const acceptOdds = (x) => {
+      if (active) setOdds(validateOdds(x));
+    };
+    const snapshotError = (e) => {
+      if (active && e.name !== "AbortError") setError(e.message);
+    };
+    const oddsFailure = (e) => {
+      if (active && e.name !== "AbortError") setOddsError(e.message);
+    };
+    setModel(null);
+    setError("");
+    setOdds(null);
+    setOddsError("");
+    if (cloud.mode === "supabase") {
+      cloud
+        .loadManifest()
+        .then((manifest) => {
+          if (!active) return;
+          cloud
+            .download(manifest.snapshot)
+            .then(acceptSnapshot)
+            .catch(snapshotError);
+          cloud.download(manifest.odds).then(acceptOdds).catch(oddsFailure);
+        })
+        .catch(snapshotError);
+    } else {
+      fetch(import.meta.env.BASE_URL + "snapshot.json", {
+        signal: controller.signal,
       })
-      .then(setOdds)
-      .catch((e) => {
-        if (e.name !== "AbortError") setOddsError(e.message);
-      });
-    return () => controller.abort();
-  }, []);
+        .then((r) => {
+          if (!r.ok) throw Error("未有數據，請先執行 ETL。");
+          return r.json();
+        })
+        .then(acceptSnapshot)
+        .catch(snapshotError);
+      fetch(import.meta.env.BASE_URL + "odds.json", {
+        signal: controller.signal,
+      })
+        .then(async (r) => {
+          if (r.status === 404)
+            return {
+              schema_version: 1,
+              status: "disconnected",
+              rows: [],
+              history: [],
+            };
+          if (!r.ok) throw Error("無法讀取盤口快照");
+          return r.json();
+        })
+        .then(acceptOdds)
+        .catch(oddsFailure);
+    }
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [cloud.mode, cloud.client, cloud.userId]);
   const setWeights = (value) => {
     if (validateWeights(value)) {
       setWeightState(value);
@@ -217,7 +255,11 @@ function App() {
             <section className="panel empty">
               <h1>數據未就緒</h1>
               <p>{error}</p>
-              <code>PYTHON=.venv/bin/python bash etl/fetch.sh</code>
+              {cloud.mode === "local" ? (
+                <code>PYTHON=.venv/bin/python bash etl/fetch.sh</code>
+              ) : (
+                <p>請確認已上傳數據快照及開通帳戶讀取權限。</p>
+              )}
               <button onClick={() => location.reload()}>重新載入</button>
             </section>
           ) : !model ? (
@@ -591,4 +633,32 @@ function PlayerTable({ model, stat, selector, go }) {
     </section>
   );
 }
-createRoot(document.getElementById("root")).render(<App />);
+function Root() {
+  let config;
+  try {
+    config = dataConfig(import.meta.env);
+  } catch (e) {
+    return (
+      <div className="cloud-shell">
+        <section className="panel auth-card">
+          <h1>雲端設定未完成</h1>
+          <p role="alert">{e.message}</p>
+        </section>
+      </div>
+    );
+  }
+  return config.mode === "local" ? (
+    <App />
+  ) : (
+    <React.Suspense
+      fallback={
+        <p role="status" className="empty">
+          正在載入私人分析空間…
+        </p>
+      }
+    >
+      <CloudGate>{(cloud) => <App cloud={cloud} />}</CloudGate>
+    </React.Suspense>
+  );
+}
+createRoot(document.getElementById("root")).render(<Root />);
