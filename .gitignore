@@ -1,0 +1,11 @@
+.venv/
+node_modules/
+web/dist/
+__pycache__/
+.pytest_cache/
+.env
+.cache/
+data/*
+!data/.gitkeep
+web/test-results/
+web/playwright-report/

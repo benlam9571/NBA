@@ -1,0 +1,49 @@
+name: Daily NBA data and build
+on:
+  schedule:
+    - cron: '37 17 * * *' # 03:37 Australia/Brisbane next day
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: nba-daily
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: nba-data-${{ github.run_id }}
+          restore-keys: nba-data-
+      - name: Fetch and validate before replacing data
+        env:
+          TZ: Australia/Brisbane
+        run: bash etl/fetch.sh
+      - run: pytest -q
+      - run: npm ci && npm test && npm run build
+        working-directory: web
+      - uses: actions/cache/save@v4
+        with:
+          path: data
+          key: nba-data-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nba-props-private-build
+          path: web/dist
+          retention-days: 7
+      # No automatic publication: download the private artifact or configure a private host.

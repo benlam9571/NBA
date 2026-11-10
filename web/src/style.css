@@ -1,0 +1,1039 @@
+:root {
+  font-family:
+    Inter,
+    "Noto Sans TC",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  font-synthesis: none;
+  font-variant-numeric: tabular-nums;
+  --bg: #f6f8f7;
+  --surface: #fff;
+  --ink: #142b2b;
+  --muted: #71817e;
+  --border: #dfe7e3;
+  --green: #078351;
+  --pale: #cce3d7;
+  --red: #c54d49;
+  --orange: #b97119;
+  --tint: #eff6f2;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+[data-theme="dark"] {
+  --bg: #101c1a;
+  --surface: #192824;
+  --ink: #e4eee9;
+  --muted: #a0b4aa;
+  --border: #33463f;
+  --green: #51cc94;
+  --pale: #315345;
+  --red: #f48b80;
+  --orange: #f3b369;
+  --tint: #20382e;
+}
+button,
+input,
+select {
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+select {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 7px;
+  padding: 8px 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+button:hover:not(:disabled) {
+  background: var(--tint);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--green);
+}
+:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+header {
+  height: 78px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  padding: 0 max(24px, calc((100vw - 1320px) / 2));
+  gap: 30px;
+}
+.brand {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+.brand svg {
+  color: var(--green);
+}
+.brand span {
+  font-weight: 450;
+}
+.headernote {
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 1px solid var(--border);
+  padding-left: 30px;
+}
+header .icon {
+  margin-left: auto;
+  border: 0;
+}
+main {
+  max-width: 1320px;
+  margin: auto;
+  padding: 0 24px;
+}
+nav {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 12px;
+  min-height: 58px;
+  flex-wrap: wrap;
+}
+nav a {
+  color: var(--muted);
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: 36px;
+  letter-spacing: -1px;
+  line-height: 1.2;
+}
+h2 {
+  font-size: 18px;
+  letter-spacing: -0.3px;
+}
+h2 small {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-left: 12px;
+  letter-spacing: 0.5px;
+}
+h3 {
+  font-size: 14px;
+}
+p {
+  line-height: 1.8;
+  font-size: 14px;
+}
+small {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+.slate {
+  padding: 17px 20px;
+}
+.sectionbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.day-control {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 12px;
+}
+.day-control button {
+  padding: 4px;
+  border: 0;
+}
+.slate-track {
+  display: flex;
+  overflow-x: auto;
+  gap: 13px;
+  padding-bottom: 3px;
+}
+.game {
+  min-width: 205px;
+  flex: 1;
+  border-right: 1px solid var(--border);
+  padding-right: 15px;
+}
+.game > small {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 11px;
+  margin-bottom: 9px;
+}
+.game button {
+  width: 100%;
+  border: 0;
+  padding: 4px 0;
+  justify-content: flex-start;
+  gap: 8px;
+}
+.game strong {
+  font-size: 12px;
+  flex: 1;
+  text-align: left;
+}
+.game em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 9px;
+}
+.game .badge {
+  width: 25px;
+  height: 25px;
+  font-size: 8px;
+}
+.badge {
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  border-bottom: 4px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.3px;
+}
+.badge.large {
+  width: 72px;
+  height: 72px;
+  font-size: 20px;
+  border-bottom-width: 6px;
+}
+.data-note {
+  font-size: 10px;
+  color: var(--muted);
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 14px 1px 0;
+}
+.data-note span {
+  margin-left: auto;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 35px 0 27px;
+}
+.heading p:not(.eyebrow) {
+  color: var(--muted);
+  margin-top: 10px;
+  max-width: 940px;
+}
+.eyebrow {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+.pill {
+  font-size: 11px;
+  color: var(--green);
+  background: var(--tint);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 13px;
+  white-space: nowrap;
+}
+.conferences {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+.conferences > section > h2 {
+  margin-bottom: 17px;
+}
+.conferences h2 small {
+  float: right;
+}
+.division {
+  margin-bottom: 18px;
+  padding: 0 17px;
+}
+.division > h3 {
+  padding: 15px 0 12px;
+  font-size: 11px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 1px;
+}
+.team-row {
+  width: 100%;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  justify-content: flex-start;
+  gap: 12px;
+  text-align: left;
+}
+.team-row:last-child {
+  border-bottom: 0;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.team-row strong {
+  font-size: 13px;
+  display: block;
+}
+.team-row small {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+}
+.record {
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--muted);
+}
+.screener {
+  margin-top: 26px;
+  padding: 22px 20px 0;
+}
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0 11px;
+}
+.search input {
+  border: 0;
+  width: 175px;
+}
+.search svg {
+  color: var(--muted);
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+}
+select,
+input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 9px 10px;
+  border-radius: 6px;
+  max-width: 100%;
+  min-width: 0;
+  color: var(--ink);
+}
+.table-scroll {
+  overflow: auto;
+  max-height: 480px;
+  margin: 0 -20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: right;
+}
+th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 1;
+  border-bottom: 1px solid var(--border);
+  padding: 0 14px;
+  height: 43px;
+}
+th button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+td {
+  border-bottom: 1px solid var(--border);
+  padding: 13px 14px;
+}
+th:first-child,
+td:first-child {
+  text-align: left;
+  padding-left: 22px;
+}
+td:first-child {
+  font-weight: 600;
+}
+tr:last-child td {
+  border-bottom: 0;
+}
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover,
+.highlight {
+  background: var(--tint);
+}
+.highlight {
+  font-weight: 800;
+}
+.good {
+  color: var(--green) !important;
+}
+.bad {
+  color: var(--red) !important;
+}
+.warn {
+  color: var(--orange);
+  font-size: 11px;
+}
+.team-heading {
+  justify-content: flex-start;
+}
+.roster {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 20px;
+}
+.player-card {
+  padding: 20px;
+  display: block;
+  text-align: left;
+}
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.card-top h3 {
+  margin-bottom: 4px;
+}
+.card-top > svg {
+  margin-left: auto;
+}
+.initials {
+  width: 40px;
+  height: 40px;
+  background: var(--tint);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 700;
+}
+.four {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 23px 0;
+}
+.four strong {
+  display: block;
+  font-size: 21px;
+  margin-top: 5px;
+}
+.odds-inline {
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+  padding-top: 13px;
+  color: var(--muted);
+}
+.odds-inline span {
+  float: right;
+}
+.controls {
+  padding: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+.controls > label:first-child {
+  flex: 1.2;
+}
+.controls > label:nth-child(2) {
+  flex: 1;
+}
+.stepper {
+  display: flex;
+}
+.stepper button {
+  border-radius: 0;
+  padding: 8px;
+}
+.stepper input {
+  width: 72px;
+  border-radius: 0;
+  text-align: center;
+  font-weight: 700;
+}
+.slider {
+  flex: 1.5;
+  min-width: 180px;
+}
+.slider label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.slider input {
+  width: 100%;
+  padding: 0;
+  accent-color: var(--green);
+  height: 20px;
+}
+.text-button {
+  padding: 0;
+  border: 0;
+  font-size: 10px;
+  color: var(--green);
+  background: transparent;
+}
+.rates {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.rate {
+  padding: 18px 15px;
+}
+.rate h3 {
+  font-size: 11px;
+  font-weight: 600;
+}
+.rate > strong {
+  display: block;
+  font-size: 30px;
+  margin: 15px 0 9px;
+  letter-spacing: -1px;
+}
+.rate > small {
+  font-size: 10px;
+  display: block;
+}
+.analysis-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  gap: 20px;
+}
+.chart-panel,
+.opponent,
+.odds {
+  padding: 22px 20px;
+  min-width: 0;
+}
+.chart-panel h2 small {
+  display: block;
+  margin: 7px 0 0;
+  font-size: 10px;
+}
+.chart {
+  height: 280px;
+  margin: 6px -5px;
+}
+.chart.minutes {
+  height: 220px;
+}
+.opponent .card-top {
+  margin: 22px 0;
+}
+.opponent p {
+  font-size: 13px;
+  margin: 20px 0;
+}
+.opponent h3 {
+  font-size: 12px;
+  margin-top: 22px;
+}
+.opponent .table-scroll {
+  max-height: 190px;
+  margin-top: 10px;
+}
+.opponent td {
+  font-size: 11px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.odds {
+  border-style: dashed;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.odds h2 {
+  margin-bottom: 17px;
+}
+.odds p {
+  margin: 20px 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.tooltip {
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  box-shadow: 0 5px 20px #0001;
+}
+.tooltip p {
+  font-size: 12px;
+}
+footer {
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 40px;
+  padding: 24px 0 35px;
+  line-height: 1.8;
+}
+.empty {
+  padding: 50px 20px;
+  text-align: center;
+}
+.empty p {
+  margin: 20px;
+}
+.empty code {
+  display: block;
+  margin: 15px;
+  font-size: 12px;
+}
+@media (min-width: 1400px) {
+  main {
+    padding: 0 10px;
+  }
+}
+@media (max-width: 900px) {
+  .rates {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .roster {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .controls {
+    flex-wrap: wrap;
+  }
+  .analysis-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .conferences {
+    gap: 16px;
+  }
+  .team-row strong {
+    font-size: 11px;
+  }
+  .team-row {
+    gap: 8px;
+  }
+  .record {
+    font-size: 10px;
+  }
+  .filters {
+    flex-wrap: wrap;
+  }
+  .screener > .sectionbar {
+    align-items: flex-start;
+  }
+  .heading h1 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 600px) {
+  header {
+    height: 64px;
+    padding: 0 16px;
+    gap: 10px;
+  }
+  .brand {
+    font-size: 20px;
+  }
+  .headernote {
+    display: none;
+  }
+  main {
+    padding: 0 14px;
+  }
+  nav {
+    font-size: 10px;
+    min-height: 50px;
+    gap: 5px;
+  }
+  .slate {
+    padding: 14px;
+  }
+  .slate h2 {
+    font-size: 14px;
+  }
+  .day-control {
+    gap: 4px;
+    font-size: 11px;
+  }
+  .slate .sectionbar {
+    gap: 8px;
+  }
+  .game {
+    min-width: 180px;
+  }
+  .data-note {
+    gap: 8px;
+  }
+  .data-note span {
+    margin-left: 0;
+  }
+  .heading {
+    margin: 26px 0 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .heading h1 {
+    font-size: 27px;
+  }
+  .heading p:not(.eyebrow) {
+    font-size: 12px;
+  }
+  .eyebrow {
+    font-size: 9px;
+  }
+  .conferences {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .division {
+    padding: 0 14px;
+  }
+  .team-row strong {
+    font-size: 13px;
+  }
+  .record {
+    font-size: 11px;
+  }
+  .badge.large {
+    width: 56px;
+    height: 56px;
+    font-size: 16px;
+  }
+  .team-heading .grow {
+    min-width: 230px;
+  }
+  .team-heading > label {
+    width: 100%;
+  }
+  .roster {
+    grid-template-columns: 1fr;
+  }
+  .screener {
+    padding: 17px 14px 0;
+  }
+  .screener > .sectionbar {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .filters {
+    width: 100%;
+    gap: 10px;
+  }
+  .filters > label {
+    flex: 1;
+  }
+  .search input {
+    width: 100%;
+  }
+  .table-scroll {
+    margin: 0 -14px;
+  }
+  .controls {
+    gap: 14px;
+    padding: 15px;
+  }
+  .controls > label:first-child {
+    flex-basis: 100%;
+  }
+  .controls > label:nth-child(2) {
+    flex-basis: 50%;
+  }
+  .slider {
+    flex-basis: 100%;
+  }
+  .rates {
+    gap: 8px;
+    margin: 14px 0;
+  }
+  .rate {
+    padding: 14px 10px;
+  }
+  .rate > strong {
+    font-size: 25px;
+    margin: 11px 0 8px;
+  }
+  .rate > small {
+    font-size: 9px;
+  }
+  .rate h3 {
+    font-size: 10px;
+  }
+  .chart-panel,
+  .opponent,
+  .odds {
+    padding: 18px 14px;
+  }
+  .chart-panel .sectionbar {
+    gap: 6px;
+  }
+  .chart-panel h2 {
+    font-size: 16px;
+  }
+  .chart {
+    height: 250px;
+  }
+  .analysis-grid {
+    gap: 14px;
+  }
+  h2 small {
+    font-size: 9px;
+  }
+  .pill {
+    font-size: 10px;
+  }
+  .heading > .pill {
+    display: none;
+  }
+  .sectionbar h2 small {
+    display: block;
+    margin: 5px 0 0;
+  }
+  .conferences h2 small {
+    display: inline;
+    margin: 0;
+  }
+  footer {
+    font-size: 9px;
+  }
+}
+.nav-odds {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.nav-odds.active {
+  color: var(--green);
+}
+.odds-overview {
+  padding: 20px;
+}
+.odds-status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.disclaimer {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 14px;
+  line-height: 1.8;
+}
+.weight-settings {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+}
+.weight-settings p {
+  font-size: 11px;
+  margin: 12px 0;
+  color: var(--muted);
+}
+.weight-fields {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.weight-fields input {
+  width: 95px;
+}
+.odds-empty {
+  padding: 18px 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.odds-excluded {
+  margin-top: 20px;
+  padding: 20px;
+}
+.odds-excluded li {
+  font-size: 12px;
+  line-height: 1.9;
+}
+.player-odds {
+  padding: 22px 20px;
+  min-width: 0;
+}
+.player-odds .table-scroll {
+  margin: 16px -20px;
+  max-height: 260px;
+}
+.player-odds td {
+  font-size: 11px;
+  padding: 12px;
+}
+.player-odds th:first-child,
+.player-odds td:first-child {
+  padding-left: 20px;
+}
+.player-odds td button {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.player-odds .sectionbar h2 small {
+  display: block;
+  margin: 7px 0 0;
+  font-size: 10px;
+}
+.player-odds > .sectionbar {
+  gap: 8px;
+}
+.player-odds .pill {
+  font-size: 9px;
+}
+.movement {
+  border-top: 1px solid var(--border);
+  padding-top: 15px;
+  margin-top: 15px;
+}
+.movement .table-scroll {
+  max-height: 200px;
+}
+.odds-status .warn {
+  font-size: 10px;
+}
+@media (max-width: 600px) {
+  header {
+    gap: 8px;
+  }
+  .nav-odds {
+    font-size: 10px;
+  }
+  .brand {
+    font-size: 18px;
+  }
+  .brand svg {
+    width: 22px;
+  }
+  .player-odds {
+    padding: 18px 14px;
+  }
+  .player-odds .table-scroll {
+    margin-left: -14px;
+    margin-right: -14px;
+  }
+  .odds-overview {
+    padding: 16px;
+  }
+  .weight-fields {
+    gap: 10px;
+  }
+  .weight-fields input {
+    width: 80px;
+  }
+  .odds-status {
+    gap: 8px;
+  }
+  .odds-excluded {
+    padding: 16px;
+  }
+  .odds-excluded ul {
+    padding-left: 16px;
+  }
+  .odds-excluded li {
+    font-size: 11px;
+  }
+}
+.movement-chart {
+  height: 185px;
+  margin: 10px 0;
+}
+.player-odds table td small {
+  white-space: normal;
+}
+.player-odds > .odds-status {
+  margin-bottom: 14px;
+}
+.analysis-grid {
+  align-items: start;
+}

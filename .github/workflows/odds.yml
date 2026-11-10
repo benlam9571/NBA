@@ -1,0 +1,78 @@
+name: Pre-game AU odds snapshot
+on:
+  schedule:
+    - cron: '7 23 * * *' # 09:07 AEST next day, before most US evening games
+  workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: 'Allow another paid fetch today'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: nba-daily
+  cancel-in-progress: false
+jobs:
+  odds:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Australia/Brisbane
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: nba-data-${{ github.run_id }}
+          restore-keys: nba-data-
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/odds
+          key: nba-odds-history-${{ github.run_id }}
+          restore-keys: nba-odds-history-
+      - name: Refresh game logs and schedule
+        run: bash etl/fetch.sh
+      - name: Fetch AU odds once (requires repository secret)
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          FORCE_REFRESH: ${{ inputs.force_refresh }}
+        run: |
+          if [ -z "$ODDS_API_KEY" ]; then
+            echo 'ODDS_API_KEY not configured; preserving existing odds snapshot.'
+          elif [ "$FORCE_REFRESH" = 'true' ]; then
+            python -m odds.fetch --force
+          else
+            python -m odds.fetch
+          fi
+      - run: pytest -q
+      - run: npm ci && npm test && npm run build
+        working-directory: web
+      - uses: actions/cache/save@v4
+        with:
+          path: data
+          key: nba-data-${{ github.run_id }}
+      - uses: actions/cache/save@v4
+        with:
+          path: .cache/odds
+          key: nba-odds-history-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nba-props-with-odds-private-build
+          path: web/dist
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: odds-history-private
+          path: .cache/odds
+          if-no-files-found: ignore
+          retention-days: 30
