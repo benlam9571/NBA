@@ -18,7 +18,14 @@ test("search, navigation, line controls, reload and both themes", async ({
     page.getByRole("heading", { name: "Luka Doncic", exact: true }),
   ).toBeVisible();
   const line = page.getByRole("spinbutton", { name: "盤口", exact: true });
-  await line.fill("30");
+  // Type key by key like a person; fill() would hide per-keystroke normalization.
+  await line.click({ clickCount: 3 });
+  await line.pressSequentially("30");
+  await expect(line).toHaveValue("30");
+  await line.press("Enter");
+  await expect(line).toHaveValue("30.5");
+  await line.fill("");
+  await line.blur();
   await expect(line).toHaveValue("30.5");
   await page.getByLabel("分析項目").selectOption("reb");
   await expect(line).not.toHaveValue("30.5");

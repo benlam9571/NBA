@@ -20,7 +20,7 @@ def test_filters_and_active_roster():
 def test_schedule_filter_and_offset():
  d=pd.DataFrame([dict(season_type=2,status_type_completed=False,game_date='2026-11-08',game_date_time='2026-11-08T18:00:00-0500',game_id=1,home_abbreviation='DET',away_abbreviation='LAL'),dict(season_type=3,status_type_completed=False,game_date='2026-11-08',game_date_time='2026-11-08T18:00:00-0500',game_id=2,home_abbreviation='DET',away_abbreviation='LAL')])
  result=schedule(d,datetime(2026,11,8,tzinfo=timezone.utc))
- assert len(result)==1 and result.iloc[0].tip=='2026-11-08T23:00:00+0000'
+ assert len(result)==1 and result.iloc[0].tip=='2026-11-08T23:00:00Z'
  assert result.iloc[0].home=='DET'
 
 def test_health_rejects_regression_and_staleness():

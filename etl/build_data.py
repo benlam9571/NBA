@@ -39,7 +39,7 @@ def schedule(raw,now):
     d=raw.loc[(pd.to_numeric(raw.season_type)==2)&~truth(raw.status_type_completed)].copy()
     tip=pd.to_datetime(d.game_date_time,utc=True)
     d=d.loc[(tip>=now)&(tip<=now+timedelta(days=60))].copy()
-    d['tip']=pd.to_datetime(d.game_date_time,utc=True).dt.strftime('%Y-%m-%dT%H:%M:%S%z')
+    d['tip']=pd.to_datetime(d.game_date_time,utc=True).dt.strftime('%Y-%m-%dT%H:%M:%SZ')  # UTC with Z: "+0000" (no colon) is not standard JS Date syntax
     d['date']=pd.to_datetime(d.game_date).dt.strftime('%Y-%m-%d')
     d['game_id']=pd.to_numeric(d.game_id).astype('int64').astype(str)
     return d.rename(columns={'home_abbreviation':'home','away_abbreviation':'away'})[['date','tip','game_id','home','away']].sort_values('tip')

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -92,14 +92,7 @@ function PlayerView({
             >
               −
             </button>
-            <input
-              aria-label="盤口"
-              type="number"
-              min="0.5"
-              step="1"
-              value={line}
-              onChange={(e) => setLine(normalizeLine(e.target.value))}
-            />
+            <LineInput line={line} setLine={setLine} />
             <button
               aria-label="增加盤口"
               onClick={() => setLine(normalizeLine(line + 1))}
@@ -142,6 +135,34 @@ function PlayerView({
         Badge={Badge}
       />
     </>
+  );
+}
+// Keep the raw text while typing; normalizing every keystroke turns "30" into 3.5.
+function LineInput({ line, setLine }) {
+  const [draft, setDraft] = useState(String(line));
+  useEffect(() => setDraft(String(line)), [line]);
+  const commit = () => {
+    if (draft.trim() === "" || !Number.isFinite(+draft)) {
+      setDraft(String(line));
+      return;
+    }
+    const next = normalizeLine(draft);
+    setLine(next);
+    setDraft(String(next));
+  };
+  return (
+    <input
+      aria-label="盤口"
+      type="number"
+      min="0.5"
+      step="1"
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") commit();
+      }}
+    />
   );
 }
 const AnalysisBody = React.memo(function AnalysisBody({
