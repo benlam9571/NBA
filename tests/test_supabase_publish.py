@@ -38,3 +38,17 @@ def test_project_origin_rejects_insecure_or_credential_urls():
  assert p.validate_url('https://project.supabase.co/')=='https://project.supabase.co'
  for url in ['http://x.test','https://user:secret@x.test','https://x.test/rest','https://x.test?q=1']:
   with pytest.raises(p.PublishError):p.validate_url(url)
+
+def test_cache_control_headers_are_valid_http_values():
+ # Storage serves this header back verbatim; bare numbers are invalid Cache-Control values.
+ client=p.StorageClient('https://project.supabase.co','service-key');sent={}
+ class Response:
+  status=200
+  def __enter__(self):return self
+  def __exit__(self,*a):return False
+ def fake_open(request,timeout):
+  sent[request.full_url.rsplit('/',1)[-1]]=request.get_header('Cache-control');return Response()
+ client.opener.open=fake_open
+ client.upload('latest.json',b'{}',upsert=True)
+ client.upload('versions/'+'a'*64+'/snapshot.json',b'{}')
+ assert sent=={'latest.json':'no-cache','snapshot.json':'max-age=31536000, immutable'}

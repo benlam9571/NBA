@@ -37,7 +37,7 @@ class StorageClient:
             raise PublishError('Invalid storage object path')
         request=Request(self.url+'/storage/v1/object/'+BUCKET+'/'+path,data=body,method='POST',headers={
             'Authorization':'Bearer '+self.key,'apikey':self.key,'Content-Type':'application/json',
-            'x-upsert':'true' if upsert else 'false','cache-control':'0' if path=='latest.json' else '31536000'})
+            'x-upsert':'true' if upsert else 'false','cache-control':'no-cache' if path=='latest.json' else 'max-age=31536000, immutable'})
         try:
             with self.opener.open(request,timeout=90) as response:
                 if response.status not in (200,201):raise PublishError('Storage upload failed')
